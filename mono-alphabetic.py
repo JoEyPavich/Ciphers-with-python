@@ -1,6 +1,6 @@
 # A Mono-alphabetic Substitution Cipher
-alpha = "abcdefghijklmnopqrstuvwxyz"
-key = "goydsipeluavcrjwxznhbqftmk"
+alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+key = "goydsipeluavcrjwxznhbqftmkGOYDSIPELUAVCRJWXZNHBQFTMK"
 
 
 def encrypt(plainText, key):
@@ -16,7 +16,7 @@ def decrypt(ciphertext, key):
         plainText += alpha[key.index(i)]
     return plainText
 
-plainText = "hello"
+plainText = "Hello"
 cipherText = encrypt(plainText, key)
 decrypted = decrypt(cipherText, key)
 print(f"encrypt of {plainText} is {cipherText}")
