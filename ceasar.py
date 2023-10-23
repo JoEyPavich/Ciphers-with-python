@@ -1,27 +1,27 @@
-def encrypt(text, key):
-    result = ""
-    for i in text:
-        if(i.isupper()):
-            result += chr((ord(i) + key - ord('A'))%26 + ord('A'))
+def encrypt(plainText, key):
+    cipherText = ""
+    for c in plainText:
+        if(c.isupper()):
+            cipherText += chr((ord(c) + key - ord('A'))%26 + ord('A'))
         else:
-            result += chr((ord(i) + key - ord('a'))%26 + ord('a'))
+            cipherText += chr((ord(c) + key - ord('a'))%26 + ord('a'))
             
-    return result
+    return cipherText
 
-def decrypt(text, key):
-    result = ""
-    for i in text:
-        if(i.isupper()):
-            result += chr((ord(i) - key - ord('A'))%26 + ord('A'))
+def decrypt(ciphertext, key):
+    plainText = ""
+    for c in ciphertext:
+        if(c.isupper()):
+            plainText += chr((ord(c) - key - ord('A'))%26 + ord('A'))
         else:
-            result += chr((ord(i) - key - ord('a'))%26 + ord('a'))
+            plainText += chr((ord(c) - key - ord('a'))%26 + ord('a'))
             
-    return result
+    return plainText
 
 
-text = "Hello"
+plainText = "Hello"
 key = 5
-en = encrypt(text, key)
-de = decrypt(en,key)
-print(f"encrypt of {text} is {en}")
-print(f"decrypt of {en} is {de}") 
+cipherText = encrypt(plainText, key)
+decrypted = decrypt(cipherText,key)
+print(f"encrypt of {plainText} is {cipherText}")
+print(f"decrypt of {cipherText} is {decrypted}") 
