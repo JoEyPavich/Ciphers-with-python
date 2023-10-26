@@ -1,9 +1,12 @@
+# Pavich sangwaree 6320502452
 # A Mono-alphabetic Substitution Cipher
-alpha = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-key = "goydsipeluavcrjwxznhbqftmkGOYDSIPELUAVCRJWXZNHBQFTMK"
+# key = "GOYDSIPELUAVCRJWXZNHBQFTMK"
+
+alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def encrypt(plainText, key):
+    plainText = plainText.upper()
     ciphertext = ""
     for i in plainText:
         ciphertext += key[alpha.index(i)]
@@ -11,13 +14,22 @@ def encrypt(plainText, key):
 
 
 def decrypt(ciphertext, key):
+    ciphertext = ciphertext.upper()
     plainText = ""
     for i in ciphertext:
         plainText += alpha[key.index(i)]
     return plainText
 
-plainText = "Hello"
-cipherText = encrypt(plainText, key)
-decrypted = decrypt(cipherText, key)
-print(f"encrypt of {plainText} is {cipherText}")
-print(f"decrypt of {cipherText} is {decrypted}")
+
+print("Welcome to A Mono-alphabetic Substitution Cipher")
+type = input("Enter type (E/D):")
+if(type != 'E' and type != 'e' and type != 'D' and type != 'd'):
+    print(f"Invalid input")
+    exit(1)
+inputString = input("Enter string:")
+key = input("Enter key string [A-Z]:")
+if(type == 'E' or type == 'e'):
+    output = encrypt(inputString, key)
+else:
+    output = decrypt(inputString, key)
+print(f"String output is {output}")

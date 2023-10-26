@@ -1,31 +1,14 @@
-import random
+# Pavich sangwaree 6320502452
+# RSA
 
-prime_list = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37,
-              41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
-
-
-def isprime(x):
-    for i in range(2, int(x/2)+1):
-        if (x % i) == 0:
-            return False
-    return True
+def gcd(p, q):
+    while q != 0:
+        p, q = q, p % q
+    return p
 
 
-def generate():
-    p = random.randint(0, 100)
-    q = random.randint(0, 100)
-    while(isprime(p) == False):
-        p = random.randint(0, 100)
-    while(isprime(q) == False and q != p):
-        q = random.randint(0, 100)
-    return p, q
-
-
-def generatePublicKey(t):
-    e = random.randint(0, t-1)
-    while(isprime(e) == False):
-        e = random.randint(0, t-1)
-    return e
+def isCoprime(x, y):
+    return gcd(x, y) == 1
 
 
 def generatePrivateKey(e, t):
@@ -37,34 +20,42 @@ def generatePrivateKey(e, t):
 
 def encrypt(plainText, public, n):
     plainText = plainText.upper()
-    cipher = []
+    cipher = ""
     for c in plainText:
-        cipher.append(pow(ord(c), public) % n)
-    return cipher
+        cipher += str(pow(ord(c) - ord('A'), public) % n)
+        cipher += "-"
+    return cipher[:-1]
 
 
 def decrypt(cipher, private, n):
     plainText = ""
+    cipher = cipher.split('-')
     for c in cipher:
-        plainText += chr(pow(c, private) % n)
+        plainText += chr((pow(int(c), private) % n) + ord('A'))
     return plainText
 
 
-# p,q = generate()
-p, q = 59, 37
+print("Welcome to RSA!")
+p = int(input("Enter prime p:"))
+q = int(input("Enter prime q:"))
 n = p*q
 t = (p-1)*(q-1)
-# e = generatePublicKey(t)
-e = 1723
-# d = generatePrivateKey(e,t)
-d = 1699
-print(f"P = {p}, Q = {q}")
-print(f"n = p*q = {n}")
-print(f"t = (p-1)*(q-1) = {t}")
-print(f"Public key = {e}")
-print(f"Private key = {d}")
-plainText = "TEST"
-cipherText = encrypt(plainText, e, n)
-decrypted = decrypt(cipherText, d, n)
-print(f"encrypt of {plainText} is {cipherText}")
-print(f"decrypt of {cipherText} is {decrypted}")
+print(f"The value of n is {p}x{q}= {n}")
+e = int(input(f"Enter co-prime e ]1,{t}[:"))
+while(not isCoprime(e, t)):
+    print(f"Sorry! {e} is not co-prime of ({p}-1)({q}-1)={t}.")
+    e = int(input(f"Enter co-prime e ]1,{t}[:"))
+d = generatePrivateKey(e, t)
+type = input("Enter the progress type E/D:")
+if(type != 'E' and type != 'e' and type != 'D' and type != 'd'):
+    print(f"Invalid input")
+    exit(1)
+if(type == 'E' or type == 'e'):
+    plainText = input("Enter the plaintext:")
+    ciphertext = encrypt(plainText, e, n)
+    print(f"The ciphertext is {ciphertext}")
+else:
+    ciphertext = input("Enter the ciphertext:")
+    plainText = decrypt(ciphertext, d, n)
+    print(f"The private key d is {d}")
+    print(f"The ciphertext is {plainText}")

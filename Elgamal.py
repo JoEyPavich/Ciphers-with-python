@@ -1,42 +1,55 @@
-import random
-
-p = 17
-g = 6
-x = 5
-y = pow(g, x, p)
-
-k = random.randint(10, 100)
-
-print(f"Let p = {p}")
-print(f"Select g = {g}")
-print(f"private key = {x}")
-print(f"public key = ({p},{g},{y})")
+# Pavich sangwaree 6320502452
+# ElGamal Cryptosystem
+# import random
 
 
-def encrypt(plainText, p, g, y):
+def gcd(p, q):
+    while q != 0:
+        p, q = q, p % q
+    return p
+
+
+def isCoprime(x, y):
+    return gcd(x, y) == 1
+
+
+def encrypt(plainText, p, g, y, k):
     plainText = plainText.upper()
-    ciphertext = []
-    for c in plainText:
-        P = ord(c)-ord('A')
-        c1 = pow(g, k, p)
-        c2 = (P*pow(y, k)) % p
-        pair = [c1, c2]
-        print(f"C1 is {c1} and C2 is {c2}")
-        ciphertext.append(pair)
-    return ciphertext
+    pCode = ord(plainText)-ord('A')
+    c1 = pow(g, k, p)
+    c2 = (pCode*pow(y, k)) % p
+    return c1, c2
 
 
-def decrypt(ciphertext, private):
-    plainText = ""
-    for c in ciphertext:
-        de = c[1] * pow(c[0], -private, p) % p
-        plainText += chr(de+ord('A'))
-    return plainText
+def decrypt(c1, c2, private):
+    de = (c2 * pow(c1, -private, p)) % p
+    return chr(de + ord('A'))
 
-# Plaintext is P ∈ [0, p[ note!
 
-plainText = "HELLO"
-cipherText = encrypt(plainText, p, g, y)
-decrypted = decrypt(cipherText, x)
-print(f"encrypt of {plainText} is {cipherText}")
-print(f"decrypt of {cipherText} is {decrypted}")
+print("Welcome to ElGamal Cryptosystem!")
+p = int(input("Enter prime p: "))
+g = int(input(f"Enter co-prime g [1,{p-1}[: "))
+while(not isCoprime(g, p)):
+    print(f"Sorry! {g} is not co-prime of {p}.")
+    g = int(input(f"Enter co-prime g [1,{p-1}[: "))
+x = int(input(f"Enter private key x ]1,{p-1}[: "))
+y = pow(g, x, p)
+print(f"Enter plublic key y is {y}")
+type = input("Enter the progress type E/D: ")
+if(type != 'E' and type != 'e' and type != 'D' and type != 'd'):
+    print(f"Invalid input")
+    exit(1)
+if(type == 'E' or type == 'e'):
+    plainText = input("Enter the plaintext: ")
+    # k = random.randint(0, 100)
+    k = 10
+    # y = 7
+    print(f"The random number k is {k}")
+    c1, c2 = encrypt(plainText, p, g, y, k)
+    print(f"The ciphertext 1 is {c1}")
+    print(f"The ciphertext 1 is {c2}")
+else:
+    c1 = int(input("Enter the ciphertext 1: "))
+    c2 = int(input("Enter the ciphertext 2: "))
+    plainText = decrypt(c1, c2, x)
+    print(f"The ciphertext is {plainText}")

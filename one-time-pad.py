@@ -1,5 +1,6 @@
-# A One time pad
-secret_key = "00101 01100 10101"
+# Pavich sangwaree 6320502452
+# A One-time Pad
+# secret_key = "00101 01100 10101"
 
 
 def binToDec(bin):
@@ -11,7 +12,7 @@ def binToDec(bin):
     return result
 
 
-def encrypt(plainText, key):
+def encryptAndDecrypt(plainText, key):
     plainText = plainText.upper()
     ciphertext = ""
     key = key.split(' ')
@@ -25,8 +26,17 @@ def encrypt(plainText, key):
         i = (i+1) % len_key
     return ciphertext
 
-plainText = 'ANT'
-cipherText = encrypt(plainText, secret_key)
-decrypted = encrypt(cipherText, secret_key)
-print(f"encrypt of {plainText} is {cipherText}")
-print(f"decrypt of {cipherText} is {decrypted}")
+
+print("Welcome to A One-time Pad")
+type = input("Enter type (E/D):")
+if(type != 'E' and type != 'e' and type != 'D' and type != 'd'):
+    print(f"Invalid input")
+    exit(1)
+inputString = input("Enter string:")
+key = input("Enter key string (n bits):")
+checkKey = key.replace(" ", "")
+if (not checkKey.isdigit() or len(checkKey) != len(inputString) * 5):
+    print("Key must be a binary string with n of data size.")
+    exit(1)
+output = encryptAndDecrypt(inputString, key)
+print(f"String output is {output}")

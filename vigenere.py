@@ -1,5 +1,6 @@
-# Vigenère Cipher
-secret_key = "SESAME"
+# Pavich sangwaree 6320502452
+# Vigenère Cipher
+# secret_key = "SESAME"
 
 
 def encrypt(plainText, key):
@@ -7,9 +8,11 @@ def encrypt(plainText, key):
     len_key = len(key)
     i = 0
     for c in plainText:
-        c = c.upper()
-        x = ord(key[i]) - ord('A')
-        ciphertext += chr((ord(c) + ord(key[i]) - 2*ord('A')) % 26 + ord('A'))
+        aCode = ord('A') if c.isupper() else ord('a')
+        pCode = ord(c) - aCode
+        kCode = ord(key[i]) - \
+            ord('A') if key[i].isupper() else ord(key[i]) - ord('a')
+        ciphertext += chr((pCode + kCode) % 26 + aCode)
         i = (i+1) % len_key
     return ciphertext
 
@@ -19,14 +22,24 @@ def decrypt(ciphertext, key):
     len_key = len(key)
     i = 0
     for c in ciphertext:
-        c = c.upper()
-        x = ord(key[i]) - ord('A')
-        plainText += chr( ( ord(c) - ord(key[i]) - 2*ord('A') ) % 26 + ord('A') )
-        i = (i+1)%len_key
+        aCode = ord('A') if c.isupper() else ord('a')
+        pCode = ord(c) - aCode
+        kCode = ord(key[i]) - \
+            ord('A') if key[i].isupper() else ord(key[i]) - ord('a')
+        plainText += chr((pCode - kCode) % 26 + aCode)
+        i = (i+1) % len_key
     return plainText
 
-plainText = "THISISATESTMESSAGE"
-cipherText = encrypt(plainText, secret_key)
-decrypted = decrypt(cipherText, secret_key)
-print(f"encrypt of {plainText} is {cipherText}")
-print(f"decrypt of {cipherText} is {decrypted}")
+
+print("Welcome to the Vigenère Cipher")
+type = input("Enter type (E/D):")
+if(type != 'E' and type != 'e' and type != 'D' and type != 'd'):
+    print(f"Invalid input")
+    exit(1)
+inputString = input("Enter string:")
+key = input("Enter key string:")
+if(type == 'E' or type == 'e'):
+    output = encrypt(inputString, key)
+else:
+    output = decrypt(inputString, key)
+print(f"String output is {output}")
